@@ -1,0 +1,46 @@
+{
+  "name": "feathers-chat",
+  "description": "",
+  "version": "0.0.0",
+  "homepage": "",
+  "main": "src/",
+  "keywords": [
+    "feathers"
+  ],
+  "license": "MIT",
+  "repository": {},
+  "author": {},
+  "contributors": [],
+  "bugs": {},
+  "engines": {
+    "node": ">= 0.12.0"
+  },
+  "scripts": {
+    "start": "node src/",
+    "jshint": "jshint src/. test/. --config",
+    "mocha": "mocha test/ --recursive",
+    "test": "npm run jshint && npm run mocha"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "compression": "^1.6.1",
+    "cors": "^2.7.1",
+    "feathers": "^2.0.0",
+    "feathers-authentication": "^0.3.5",
+    "feathers-configuration": "^0.1.0",
+    "feathers-errors": "^2.0.1",
+    "feathers-hooks": "^1.0.0",
+    "feathers-mongoose": "^3.3.6",
+    "feathers-rest": "^1.0.0",
+    "feathers-socketio": "^1.0.0",
+    "mongoose": "^4.4.6",
+    "passport": "^0.3.2",
+    "serve-favicon": "^2.3.0",
+    "winston": "^2.2.0"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.1",
+    "mocha": "^2.4.5",
+    "request": "^2.69.0"
+  }
+}
