@@ -1,18 +1,20 @@
 <template>
   <div id="app">
     <img class="logo" src="./assets/logo.png">
-    <Hello></Hello>
-    <Messages></Messages>
+    <p>
+      <a v-link="{ path: '/index' }">Go to Home</a>
+      <a v-link="{ path: '/messages' }">Go to Messages</a>
+    </p>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello'
-import Messages from './components/Messages'
-
-export default {
-  components: { Messages, Hello }
-}
+  import store from './vuex/store'
+  export default {
+    replace: false,
+    store
+  }
 </script>
 
 <style>

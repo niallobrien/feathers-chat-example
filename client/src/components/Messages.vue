@@ -14,9 +14,10 @@
 <script>
   import * as services from '../services'
   import { getMessages } from '../vuex/getters'
-  import { fetchMessages, addMessage, removeMessage } from '../vuex/actions'
+  import { fetchMessages, addMessage, removeMessage, stopAddMessageListener, stopRemoveMessageListener } from '../vuex/actions'
 
   export default {
+    name: 'messages',
     vuex: {
       getters: {
         messages: getMessages
@@ -37,6 +38,10 @@
       this.fetchMessages()
       this.addMessage()
       this.removeMessage()
+    },
+    beforeDestroy () {
+      stopAddMessageListener()
+      stopRemoveMessageListener()
     },
 
     methods: {
