@@ -14,8 +14,7 @@
 <script>
   import * as services from '../services'
   import { getMessages } from '../vuex/getters'
-  import { fetchMessages, addMessage, removeMessage, stopAddMessageListener, stopRemoveMessageListener } from '../vuex/actions'
-
+  import { fetchMessages, addMessage, removeMessage, messageVuexEvents } from '../vuex/messages/actions'
   export default {
     name: 'messages',
     vuex: {
@@ -33,17 +32,14 @@
         newMessage: ''
       }
     },
-
     ready () {
       this.fetchMessages()
-      this.addMessage()
-      this.removeMessage()
+      messageVuexEvents.createEvents() // Notice I dont use this
     },
     beforeDestroy () {
-      stopAddMessageListener()
-      stopRemoveMessageListener()
+      messageVuexEvents.destroyEvents()
     },
-
+    // TODO optimistic updates
     methods: {
       tryAddMessage () {
         if (this.newMessage.trim()) {
