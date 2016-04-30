@@ -14,7 +14,9 @@ export function removeMessage ({ dispatch }, message) {
 export function addMessage ({ dispatch }, message) {
   dispatch('ADD_MESSAGE', message)
 }
-// Connect Feather Events to Vuex Actions
+// Connect Feather Events to Vuex Actions using FeathersVuex Utility
+// Create object with this structure:
+// 'event-name': function to execute
 const dispatch = store.dispatch
 const eventFunctions = {
   created: (message) => addMessage({ dispatch }, message),

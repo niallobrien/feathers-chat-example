@@ -13,6 +13,7 @@
 
 <script>
   import * as services from '../services'
+  import uuid from 'uuid'
   import { getMessages } from '../vuex/getters'
   import { fetchMessages, addMessage, removeMessage, messageVuexEvents } from '../vuex/messages/actions'
   export default {
@@ -44,13 +45,19 @@
       tryAddMessage () {
         if (this.newMessage.trim()) {
           // Persist a new message to the db
-          services.messageService.create({ text: this.newMessage }).then(this.newMessage = '')
+          const newMessage = { _id: uuid.v4(), text: this.newMessage }
+          this.addMessage(newMessage) // Optimistic update
+          services.messageService.create(newMessage)
+            .then(this.newMessage = '')
+            .catch(() => this.removeMessage(newMessage)) // Remove message from vuex store
         }
       },
       tryRemoveMessage (message) {
         // Remove message from the db
+        this.removeMessage(message) // Optimistic Update
         services.messageService.remove(message._id)
         .catch((err) => {
+          this.addMessage(message)
           console.log(err)
         })
       }
