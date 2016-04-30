@@ -1,1 +1,1 @@
-export const getMessages = state => state.messages
+export const getMessages = state => state.messages.messages

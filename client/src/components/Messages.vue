@@ -15,7 +15,8 @@
   import * as services from '../services'
   import uuid from 'uuid'
   import { getMessages } from '../vuex/getters'
-  import { fetchMessages, addMessage, removeMessage, messageVuexEvents } from '../vuex/messages/actions'
+  import { fetchMessages, addMessage, removeMessage } from '../vuex/messages/actions'
+  import { messageVuexEvents } from '../vuex/messages/events'
   export default {
     name: 'messages',
     vuex: {
