@@ -39,6 +39,8 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.0.6",
     "jshint": "^2.9.1",
     "mocha": "^2.4.5",
     "request": "^2.69.0"
