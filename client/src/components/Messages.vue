@@ -4,29 +4,38 @@
     <button type="submit" @click="tryAddMessage">Add message</button>
     <ul>
       <li v-for="message in messages">
-        <span>{{ message.text }}</span>
-        <span @click="tryRemoveMessage(message)">x</span>
+        <span v-bind:class="{ 'pending': isPending(message) }">{{ message.text }}</span>
+        <!-- <span v-bind:class="{ 'pending': isPending(message) }" @click="tryRemoveMessage(message)">x</span> -->
+        <button :disabled="isPending(message)" type="submit" @click="tryRemoveMessage(message)">X</button>
       </li>
     </ul>
   </div>
 </template>
+<style media="screen">
+  .pending {
+    opacity: 0.5;
+  }
+</style>
 
 <script>
   import * as services from '../services'
   import uuid from 'uuid'
-  import { getMessages } from '../vuex/getters'
-  import { fetchMessages, addMessage, removeMessage } from '../vuex/messages/actions'
+  import { getMessages, getPending } from '../vuex/getters'
+  import { fetchMessages, addMessage, removeMessage, addPending, removePending } from '../vuex/messages/actions'
   import { messageVuexEvents } from '../vuex/messages/events'
   export default {
     name: 'messages',
     vuex: {
       getters: {
-        messages: getMessages
+        messages: getMessages,
+        pending: getPending
       },
       actions: {
         fetchMessages,
         addMessage,
-        removeMessage
+        removeMessage,
+        addPending,
+        removePending
       }
     },
     data () {
@@ -47,10 +56,18 @@
         if (this.newMessage.trim()) {
           // Persist a new message to the db
           const newMessage = { _id: uuid.v4(), text: this.newMessage }
+          this.newMessage = ''
           this.addMessage(newMessage) // Optimistic update
+          this.addPending(newMessage)
           services.messageService.create(newMessage)
-            .then(this.newMessage = '')
-            .catch(() => this.removeMessage(newMessage)) // Remove message from vuex store
+            .then(() => {
+              this.removePending(newMessage)
+            })
+            .catch(() => {
+              // Pending marker will be automatically removed through removeMessage action
+              // TODO UI Error Handling
+              this.removeMessage(newMessage)
+            })
         }
       },
       tryRemoveMessage (message) {
@@ -58,9 +75,14 @@
         this.removeMessage(message) // Optimistic Update
         services.messageService.remove(message._id)
         .catch((err) => {
+          // Error deleting! Add back the message
+          // TODO UI Error Handling
           this.addMessage(message)
           console.log(err)
         })
+      },
+      isPending (message) {
+        return this.pending.indexOf(message._id) !== -1
       }
     }
   }
