@@ -9,6 +9,8 @@
     "test": "karma start build/karma.conf.js --single-run"
   },
   "dependencies": {
+    "milligram": "^1.1.0",
+    "normalize.css": "^4.1.1",
     "uuid": "^2.0.2",
     "vue": "^1.0.16",
     "vue-router": "^0.7.13",
@@ -56,6 +58,7 @@
     "phantomjs-prebuilt": "^2.1.3",
     "rimraf": "^2.5.0",
     "socket.io-client": "^1.4.5",
+    "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "vue-hot-reload-api": "^1.2.0",
     "vue-html-loader": "^1.0.0",

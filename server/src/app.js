@@ -27,7 +27,14 @@ app.use(compress())
   .use(bodyParser.urlencoded({ extended: true }))
   .configure(hooks())
   .configure(rest())
-  .configure(socketio())
+  .configure(socketio((io) => {
+    // Registering Socket.io middleware
+    io.use((socket, next) => {
+      // Exposing a request property to services and hooks
+      socket.feathers.socketid = socket.id
+      next();
+    });
+  }))
   .configure(services)
   .configure(middleware);
 

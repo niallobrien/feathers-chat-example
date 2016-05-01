@@ -16,7 +16,7 @@
     "node": ">= 0.12.0"
   },
   "scripts": {
-    "start": "node src/",
+    "start": "node --debug=5858 src/",
     "jshint": "jshint src/. test/. --config",
     "mocha": "mocha test/ --recursive",
     "test": "npm run jshint && npm run mocha"

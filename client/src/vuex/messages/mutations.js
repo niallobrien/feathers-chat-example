@@ -1,10 +1,10 @@
 import { FETCH_MESSAGES, ADD_MESSAGE, REMOVE_MESSAGE, ADD_PENDING, REMOVE_PENDING } from '../mutation-types'
-import { findIndex, indexOf } from 'lodash'
+import { findIndex } from 'lodash'
 
 // initial state
 const state = {
-  messages: [], // List of Message objects
-  pending: [] // List of Mesage object not confirmed to have been commmited to db disk
+  messages: [], // List of Message *objects*
+  pending: [] // List of Message objects not confirmed to have been commmited to db disk
 }
 // Define Mutations for this state
 const mutations = {
@@ -18,14 +18,13 @@ const mutations = {
   [REMOVE_MESSAGE] (state, message) {
     // find the index of the obj to remove from array
     let index = findIndex(state.messages, { _id: message._id })
-    // remove the obj at position [index] from array
     if (index > -1) state.messages.$remove(state.messages[index])
   },
   [ADD_PENDING] (state, message) {
-    state.pending.push(message._id)
+    state.pending.push(message)
   },
   [REMOVE_PENDING] (state, message) {
-    let index = indexOf(state.pending, message._id)
+    let index = findIndex(state.pending, { _id: message._id })
     if (index > -1) state.pending.$remove(state.pending[index])
   }
 }

@@ -1,14 +1,25 @@
 <template>
   <div>
-    <input type="text" placeholder="Enter message" v-model="newMessage" @keyup.enter="tryAddMessage">
-    <button type="submit" @click="tryAddMessage">Add message</button>
-    <ul>
-      <li v-for="message in messages">
-        <span v-bind:class="{ 'pending': isPending(message) }">{{ message.text }}</span>
-        <!-- <span v-bind:class="{ 'pending': isPending(message) }" @click="tryRemoveMessage(message)">x</span> -->
-        <button :disabled="isPending(message)" type="submit" @click="tryRemoveMessage(message)">X</button>
-      </li>
-    </ul>
+    <div class="row">
+      <div class="column">
+        <input type="text" placeholder="Enter message" v-model="newMessage" @keyup.enter="tryAddMessage">
+      </div>
+      <div class="column">
+        <button type="submit" @click="tryAddMessage">Add message</button>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <th>Messsage</th>
+        <th>Action</th>
+      </thead>
+      <tbody>
+        <tr v-for="message in messages">
+          <td><span v-bind:class="{ 'pending': isPending(message) }">{{ message.text }}</span></td>
+          <td><button :disabled="isPending(message)" type="submit" @click="tryRemoveMessage(message)">X</button></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 <style media="screen">
@@ -20,6 +31,7 @@
 <script>
   import * as services from '../services'
   import uuid from 'uuid'
+  import { findIndex } from 'lodash'
   import { getMessages, getPending } from '../vuex/getters'
   import { fetchMessages, addMessage, removeMessage, addPending, removePending } from '../vuex/messages/actions'
   import { messageVuexEvents } from '../vuex/messages/events'
@@ -45,12 +57,11 @@
     },
     ready () {
       this.fetchMessages()
-      messageVuexEvents.createEvents() // Notice I dont use this
+      messageVuexEvents.createEvents() // Notice I dont use *this*,
     },
     beforeDestroy () {
-      messageVuexEvents.destroyEvents()
+      messageVuexEvents.destroyEvents() // Notice I dont use *this*,
     },
-    // TODO optimistic updates
     methods: {
       tryAddMessage () {
         if (this.newMessage.trim()) {
@@ -82,7 +93,7 @@
         })
       },
       isPending (message) {
-        return this.pending.indexOf(message._id) !== -1
+        return findIndex(this.pending, { _id: message._id }) !== -1
       }
     }
   }

@@ -1,8 +1,11 @@
 'use strict'
-
-function removeSocketEvent(data, connection) {
-  console.log('Event Filtering!!')
+function removeClientIntiatedEvents(data, connection, hook) {
+  // Dont send events to clients that initiated the resource change
+  if(connection.socketid === hook.params.socketid) {
+    return false;
+  }
+  return data;
 }
 module.exports = {
-  all: [removeSocketEvent]
+  all: [removeClientIntiatedEvents]
 }

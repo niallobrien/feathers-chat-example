@@ -1,10 +1,8 @@
 import * as services from '../../services'
 import { FETCH_MESSAGES, ADD_MESSAGE, REMOVE_MESSAGE, ADD_PENDING, REMOVE_PENDING } from '../mutation-types'
 export function fetchMessages ({ dispatch }) {
-  console.log('fetch messages')
   // Call the messages service on the server via websocket
   services.messageService.find({}).then(messages => {
-    console.log('Found them')
     dispatch(FETCH_MESSAGES, messages.data)
   })
 }
