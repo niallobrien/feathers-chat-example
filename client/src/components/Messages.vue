@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="row">
       <div class="column">
         <input type="text" placeholder="Enter message" v-model="newMessage" @keyup.enter="tryAddMessage">
@@ -13,10 +13,8 @@
         <th>Messsage</th>
         <th>Action</th>
       </thead>
-      <tbody>
-        <tr v-for="message in messages">
-          <td><span v-bind:class="{ 'pending': isPending(message) }">{{ message.text }}</span></td>
-          <td><button :disabled="isPending(message)" type="submit" @click="tryRemoveMessage(message)">X</button></td>
+      <tbody v-for="message in messages">
+        <tr is="message" :message="message" :is-pending="isPending(message)" >
         </tr>
       </tbody>
     </table>
@@ -29,6 +27,7 @@
 </style>
 
 <script>
+  import Message from './Message'
   import * as services from '../services'
   import uuid from 'uuid'
   import { findIndex } from 'lodash'
@@ -37,6 +36,9 @@
   import { messageVuexEvents } from '../vuex/messages/events'
   export default {
     name: 'messages',
+    components: {
+      'message': Message
+    },
     vuex: {
       getters: {
         messages: getMessages,
@@ -69,28 +71,17 @@
           const newMessage = { _id: uuid.v4(), text: this.newMessage }
           this.newMessage = ''
           this.addMessage(newMessage) // Optimistic update
-          this.addPending(newMessage)
+          this.addPending(newMessage) // Mark Message as Pending
           services.messageService.create(newMessage)
-            .then(() => {
-              this.removePending(newMessage)
-            })
-            .catch(() => {
-              // Pending marker will be automatically removed through removeMessage action
-              // TODO UI Error Handling
-              this.removeMessage(newMessage)
-            })
+          .then(() => {
+            this.removePending(newMessage)
+          })
+          .catch(() => {
+            // Pending marker will be automatically removed through removeMessage action
+            // TODO UI Error Handling
+            this.removeMessage(newMessage)
+          })
         }
-      },
-      tryRemoveMessage (message) {
-        // Remove message from the db
-        this.removeMessage(message) // Optimistic Update
-        services.messageService.remove(message._id)
-        .catch((err) => {
-          // Error deleting! Add back the message
-          // TODO UI Error Handling
-          this.addMessage(message)
-          console.log(err)
-        })
       },
       isPending (message) {
         return findIndex(this.pending, { _id: message._id }) !== -1
