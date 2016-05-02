@@ -1,9 +1,18 @@
 import * as services from '../../services'
-import { FETCH_MESSAGES, ADD_MESSAGE, REMOVE_MESSAGE, ADD_PENDING, REMOVE_PENDING } from '../mutation-types'
+import {
+  FETCH_MESSAGES, PENDING_FETCH, SUCCESS_FETCH, FAIL_FETCH,
+  ADD_MESSAGE, REMOVE_MESSAGE,
+  ADD_PENDING, REMOVE_PENDING
+  } from '../mutation-types'
 export function fetchMessages ({ dispatch }) {
   // Call the messages service on the server via websocket
+  dispatch(PENDING_FETCH)
   services.messageService.find({}).then(messages => {
+    dispatch(SUCCESS_FETCH)
     dispatch(FETCH_MESSAGES, messages.data)
+  })
+  .catch((err) => {
+    dispatch(FAIL_FETCH, err)
   })
 }
 export function removeMessage ({ dispatch }, message) {

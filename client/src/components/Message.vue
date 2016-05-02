@@ -26,10 +26,13 @@
         this.removeMessage(message) // Optimistic Update
         services.messageService.remove(message._id)
         .catch((err) => {
-          // Error deleting! Add back the message
-          // TODO UI Error Handling
-          this.addMessage(message)
-          console.log(err)
+          // If the message is not found on the server (code 404) then DONT add it back
+          if (err.code !== 404) {
+            // Error deleting! Add back the message
+            // TODO UI Error Handling
+            this.addMessage(message)
+            console.log(err)
+          }
         })
       }
     }

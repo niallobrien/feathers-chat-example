@@ -1,10 +1,15 @@
-import { FETCH_MESSAGES, ADD_MESSAGE, REMOVE_MESSAGE, ADD_PENDING, REMOVE_PENDING } from '../mutation-types'
+import {
+  FETCH_MESSAGES, PENDING_FETCH, SUCCESS_FETCH, FAIL_FETCH,
+  ADD_MESSAGE, REMOVE_MESSAGE,
+  ADD_PENDING, REMOVE_PENDING
+  } from '../mutation-types'
 import { findIndex } from 'lodash'
 
 // initial state
 const state = {
   messages: [], // List of Message *objects*
-  pending: [] // List of Message objects not confirmed to have been commmited to db disk
+  pending: [], // List of Message objects not confirmed to have been commmited to db disk
+  fetchStatus: ''
 }
 // Define Mutations for this state
 const mutations = {
@@ -26,6 +31,15 @@ const mutations = {
   [REMOVE_PENDING] (state, message) {
     let index = findIndex(state.pending, { _id: message._id })
     if (index > -1) state.pending.$remove(state.pending[index])
+  },
+  [PENDING_FETCH] (state) {
+    state.fetchStatus = PENDING_FETCH
+  },
+  [SUCCESS_FETCH] (state) {
+    state.fetchStatus = SUCCESS_FETCH
+  },
+  [FAIL_FETCH] (state) {
+    state.fetchStatus = FAIL_FETCH
   }
 }
 export default {

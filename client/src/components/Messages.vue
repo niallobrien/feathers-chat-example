@@ -2,20 +2,27 @@
   <div class="container">
     <div class="row">
       <div class="column">
+        <p>
+          Two second delay added to demonstrate optimistic upates.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
         <input type="text" placeholder="Enter message" v-model="newMessage" @keyup.enter="tryAddMessage">
       </div>
       <div class="column">
         <button type="submit" @click="tryAddMessage">Add message</button>
       </div>
     </div>
+    <span v-show="pendingFetch">Fetching New Messages...</span>
     <table>
       <thead>
         <th>Messsage</th>
         <th>Action</th>
       </thead>
       <tbody v-for="message in messages">
-        <tr is="message" :message="message" :is-pending="isPending(message)" >
-        </tr>
+        <tr is="message" :message="message" :is-pending="isPending(message)" ></tr>
       </tbody>
     </table>
   </div>
@@ -31,7 +38,7 @@
   import * as services from '../services'
   import uuid from 'uuid'
   import { findIndex } from 'lodash'
-  import { getMessages, getPending } from '../vuex/getters'
+  import { getMessages, getPending, getFetchStatus } from '../vuex/getters'
   import { fetchMessages, addMessage, removeMessage, addPending, removePending } from '../vuex/messages/actions'
   import { messageVuexEvents } from '../vuex/messages/events'
   export default {
@@ -42,7 +49,8 @@
     vuex: {
       getters: {
         messages: getMessages,
-        pending: getPending
+        pending: getPending,
+        fetchStatus: getFetchStatus
       },
       actions: {
         fetchMessages,
@@ -64,6 +72,11 @@
     beforeDestroy () {
       messageVuexEvents.destroyEvents() // Notice I dont use *this*,
     },
+    computed: {
+      pendingFetch () {
+        return this.fetchStatus === 'PENDING_FETCH'
+      }
+    },
     methods: {
       tryAddMessage () {
         if (this.newMessage.trim()) {
@@ -84,7 +97,7 @@
         }
       },
       isPending (message) {
-        return findIndex(this.pending, { _id: message._id }) !== -1
+        return (findIndex(this.pending, { _id: message._id }) !== -1 || this.pendingFetch)
       }
     }
   }

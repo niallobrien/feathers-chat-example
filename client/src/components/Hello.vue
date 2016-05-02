@@ -9,6 +9,7 @@
       <li>Uses Vuex for Clients Application State Management</li>
       <li>Demonstrates use of real-time events</li>
       <li>Example of optimistic updates</li>
+      <li>Test these out by opening up another tab!</li>
     </ul>
   </div>
 </template>
