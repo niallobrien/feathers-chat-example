@@ -4,6 +4,7 @@
       <div class="column">
         <p>
           Two second delay added to demonstrate optimistic upates.
+          <span class="pending-fetch" v-show="pendingFetch">Fetching New Messages...</span>
         </p>
       </div>
     </div>
@@ -12,10 +13,9 @@
         <input type="text" placeholder="Enter message" v-model="newMessage" @keyup.enter="tryAddMessage">
       </div>
       <div class="column">
-        <button type="submit" @click="tryAddMessage">Add message</button>
+        <button :disabled="pendingFetch" type="submit" @click="tryAddMessage">Add message</button>
       </div>
     </div>
-    <span v-show="pendingFetch">Fetching New Messages...</span>
     <table>
       <thead>
         <th>Messsage</th>
@@ -30,6 +30,9 @@
 <style media="screen">
   .pending {
     opacity: 0.5;
+  }
+  .pending-fetch{
+    color: #9b4dca;
   }
 </style>
 
