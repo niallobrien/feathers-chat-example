@@ -36,6 +36,8 @@
 </script>
 
 <style>
+@import url("../node_modules/normalize.css/normalize.css");
+@import url("../node_modules/milligram/dist/milligram.css");
 
 /*Override milligram colors to Vue green : ) */
 a {

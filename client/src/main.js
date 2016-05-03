@@ -1,4 +1,3 @@
-import './styles'
 import App from './App'
 import { sync } from 'vuex-router-sync'
 
