@@ -1,25 +1,20 @@
 <template>
   <div id="app">
     <div class="container">
-      <div class="row">
-        <div class="column column-50 column-offset-25">
-          <div class="inner padding-left">
+      <div class="grid">
+        <div class="gird__col grid__col--s-12-of-12 grid__col--4-of-5 grid__col--centered">
+          <div class="">
             <img class="logo" src="./assets/logo.png">
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="column column-50 column-offset-25">
-          <p class="inner padding-bottom">
-            <a v-link="{ path: '/index' }">Go to Home</a>
-            <a v-link="{ path: '/messages' }">Go to Messages</a>
-          </p>
+        <div class="gird__col grid__col--s-12-of-12 grid__col--4-of-5 grid__col--centered">
+            <p class="padding-bottom text-align">
+              <a v-link="{ path: '/index' }">Go to Home</a>
+              <a v-link="{ path: '/messages' }">Go to Messages</a>
+            </p>
         </div>
-      </div>
-      <div class="row">
-        <div class="column column-50 column-offset-25">
+        <div class="gird__col grid__col--s-12-of-12 grid__col--4-of-5 grid__col--centered">
           <router-view></router-view>
-
         </div>
       </div>
 
@@ -38,6 +33,13 @@
 <style>
 @import url("../node_modules/normalize.css/normalize.css");
 @import url("../node_modules/milligram/dist/milligram.css");
+@import url("./assets/css/toast.css");
+
+
+.center-div{
+  margin: 0 auto;
+  width: 100px;
+}
 
 /*Override milligram colors to Vue green : ) */
 a {
@@ -61,9 +63,12 @@ body {
 #app {
   margin-top: 100px;
 }
+.text-align {
+  text-align: center;
+}
 .inner {
-    width: 50%;
-    margin: 0 auto;
+  display:block;
+  margin:auto;
 }
 .padding-bottom {
   padding-bottom: 20px;
@@ -74,6 +79,8 @@ body {
 
 .logo {
   width: 100px;
-  height: 100px
+  height: 100px;
+  display:block;
+  margin:auto;
 }
 </style>

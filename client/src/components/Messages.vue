@@ -16,15 +16,19 @@
         <button :disabled="pendingFetch" type="submit" @click="tryAddMessage">Add message</button>
       </div>
     </div>
-    <table>
-      <thead>
-        <th>Messsage</th>
-        <th>Action</th>
-      </thead>
-      <tbody v-for="message in messages">
-        <tr is="message" :message="message" :is-pending="isPending(message)" ></tr>
-      </tbody>
-    </table>
+    <div class="row">
+      <div class="column">
+        <table>
+          <thead>
+            <th>Messsage</th>
+            <th>Action</th>
+          </thead>
+          <tbody v-for="message in messages">
+            <tr is="message" :message="message" :is-pending="isPending(message)" ></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 <style media="screen">
