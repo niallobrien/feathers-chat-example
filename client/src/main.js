@@ -1,15 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 import App from './App'
+import { sync } from 'vuex-router-sync'
 
 import store from './vuex/store'
+import router from './router/index'
 
-Vue.use(Vuex)
+sync(store, router)
 
-/* eslint-disable no-new */
-new Vue({
-  el: 'body',
-  store,
-  components: { App }
-})
-
+router.start(App, 'body')

@@ -3,6 +3,7 @@ const path = require('path');
 const NeDB = require('nedb');
 const service = require('feathers-nedb');
 const hooks = require('./hooks');
+const filters = require('./filters');
 
 module.exports = function() {
   const app = this;
@@ -29,4 +30,6 @@ module.exports = function() {
 
   // Set up our after hooks
   messageService.after(hooks.after);
+
+  messageService.filter(filters);
 };
